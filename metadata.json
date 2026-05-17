@@ -1,0 +1,8 @@
+{
+  "name": "NJTRINI-01",
+  "description": "Professional consulting landing page with Supabase integration",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

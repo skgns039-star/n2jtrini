@@ -1,0 +1,8 @@
+
+node_modules
+dist
+.env
+*.js
+*.cjs
+package-lock.json
+.git
