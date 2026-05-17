@@ -69,29 +69,33 @@ export default function App() {
 
   const handleApply = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.name || !formData.phone) return;
+    
     setFormStatus('loading');
     
     try {
-      // Direct Supabase call (works on static hosts like GitHub Pages)
-      const { error } = await supabase
+      // Ensure specific fields are mapped correctly
+      const submissionData = {
+        name: formData.name.trim(),
+        phone: formData.phone.trim(),
+        category: formData.category,
+        details: 'Landing page quick apply (Client)'
+      };
+
+      const { data, error } = await supabase
         .from('consultations')
-        .insert([
-          {
-            name: formData.name,
-            phone: formData.phone,
-            category: formData.category,
-            details: 'Landing page quick apply'
-          }
-        ]);
+        .insert([submissionData])
+        .select();
       
       if (!error) {
         setFormStatus('success');
+        setFormData({ name: '', phone: '', category: '식당/카페' });
       } else {
-        console.error('Supabase Error:', error);
+        console.error('Supabase Error Detailed:', JSON.stringify(error));
         setFormStatus('error');
       }
-    } catch (error) {
-      console.error('Error submitting form:', error);
+    } catch (err) {
+      console.error('Form Caught Exception:', err);
       setFormStatus('error');
     }
   };
