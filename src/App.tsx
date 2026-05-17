@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { supabase } from './supabase';
 import { 
   CheckCircle2, 
   ArrowRight, 
@@ -71,20 +72,22 @@ export default function App() {
     setFormStatus('loading');
     
     try {
-      const response = await fetch('/api/consultation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          phone: formData.phone,
-          type: formData.category,
-          details: 'Landing page quick apply'
-        }),
-      });
+      // Direct Supabase call (works on static hosts like GitHub Pages)
+      const { error } = await supabase
+        .from('consultations')
+        .insert([
+          {
+            name: formData.name,
+            phone: formData.phone,
+            category: formData.category,
+            details: 'Landing page quick apply'
+          }
+        ]);
       
-      if (response.ok) {
+      if (!error) {
         setFormStatus('success');
       } else {
+        console.error('Supabase Error:', error);
         setFormStatus('error');
       }
     } catch (error) {
