@@ -82,10 +82,9 @@ export default function App() {
         details: 'Landing page quick apply (Client)'
       };
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('consultations')
-        .insert([submissionData])
-        .select();
+        .insert([submissionData]);
       
       if (!error) {
         setFormStatus('success');
